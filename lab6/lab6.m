@@ -23,32 +23,20 @@ sig_mod = oqpskmod(signal,8);
 %scatterplot(sig_mod);
 sig_demod = oqpskdemod(sig_mod,8);
 %scatterplot(sig_demod);
-figure;
+
 
 %genQAM
 signal = randi([0 7], [1 256]);
-sig_mod = genqammod(signal,8);
+sig_mod = genqammod(signal, exp(j*[0:7]));
 scatterplot(sig_mod);
-sig_demod = genqammod(sig_mod,8);
+sig_demod = genqamdemod(sig_mod,exp(j*[0:7]));
 scatterplot(sig_demod);
-figure;
 
-M = 11;
-h = modem.genqammod('Constellation', exp(j*2*pi*[0:M-1]/M));
-g = modem.genqamdemod('Constellation', exp(j*2*pi*[0:M-1]/M));
-msg = randi([0 7], [1 256]);
-modSignal = modulate(h,msg);
-errSignal = (randerr(1,11, 3) ./ 30)';
-modSignal = modSignal + errSignal;
-demodSignal = demodulate(g,modSignal);
-scatterplot(modSignal);
 
 %MSK
-h = modem.mskmod('SamplesPerSymbol', 11);
-g = modem.mskdemod('SamplesPerSymbol', 11);
-msg = randi([0 7], [1 256]);
-modSignal = modulate(h, msg);
-errSignal = (randerr(1,121, 3) ./ 15)';
-modSignal = modSignal + errSignal;
-demodSignal = demodulate(g, modSignal);
-scatterplot(modSignal);
+signal = randi([0 1], [1 256]);
+sig_mod = mskmod(signal, 16);
+scatterplot(sig_mod);
+sig_demod = mskdemod(sig_mod, 16);
+scatterplot(sig_demod);
+
